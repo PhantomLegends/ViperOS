@@ -1,5 +1,13 @@
 # ViperOS
 
+![Codeplain Spec](https://img.shields.io/badge/spec-codeplain-0F172A?logo=markdown&logoColor=white)
+![Python 3.12](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/api-FastAPI-009688?logo=fastapi&logoColor=white)
+![SQLite](https://img.shields.io/badge/storage-SQLite-003B57?logo=sqlite&logoColor=white)
+![pytest](https://img.shields.io/badge/tests-pytest-0A9EDC?logo=pytest&logoColor=white)
+![Local First](https://img.shields.io/badge/runtime-local--first-1F2937)
+![Headless](https://img.shields.io/badge/interface-headless-111827)
+
 ViperOS is a headless, local-first automation runtime designed for private on-device control. It provides a CLI and local HTTP API, with optional voice input and text-to-speech feedback, while keeping execution and storage on the local machine.
 
 ## Product Description

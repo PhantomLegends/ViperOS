@@ -1,0 +1,2 @@
+unittests-script: test_scripts/run_unittests_python.ps1
+template-dir: template

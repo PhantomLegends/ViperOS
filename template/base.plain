@@ -1,0 +1,27 @@
+---
+description: Shared base requirements for VIPER OS Core.
+---
+
+***implementation reqs***
+- :Implementation: should use Python 3.12.
+- :Implementation: should use FastAPI for the local HTTP API.
+- :Implementation: should store local state in SQLite.
+- :Implementation: should be a headless, cross-platform, local-first automation runtime.
+- :Implementation: should have no cloud dependency and no GUI.
+- :Implementation: should support CLI control alongside the local API.
+- :Implementation: should support optional voice input and text-to-speech feedback.
+- :Implementation: should route platform-specific actions through a hardware adapter layer.
+- :Implementation: should keep all network, file, and database access local to the machine.
+- :Implementation: should persist users, workflows, workflow actions, settings, logs, and confirmations in SQLite.
+- :Implementation: should use a dedicated command parser for CLI and API text commands.
+- :Implementation: should choose the active adapter from the detected operating system.
+- :Implementation: should keep all OS-facing operations inside the hardware adapter layer.
+- :Implementation: should support a headless FastAPI server entrypoint and a CLI entrypoint.
+- :Implementation: should keep TTS optional and controlled through settings.
+- :Implementation: should keep voice input optional and local.
+- :Implementation: should hash passcodes before storage.
+- :Implementation: should treat Raspberry Pi as Linux for adapter selection.
+- :Implementation: should manage Python dependencies with `pip` and `requirements.txt`.
+- :UnitTests: should use `pytest`.
+- :UnitTests: should run via `python -m pytest`.
+- :UnitTests: runner details are documented in [run_unittests_python.ps1](resources/run_unittests_python.ps1).

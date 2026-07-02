@@ -38,31 +38,32 @@ description: VIPER OS Core is a headless, local-first automation runtime for CLI
   - The command text should be parsed by :CommandParser:.
   - Supported commands should run through the same local execution path as the CLI.
   - Each request should write one :CommandLog: entry with the command and result.
-- :CommandParser: should understand the supported command phrases.
-  - `create workflow <name>`
-  - `add app <app_name> to <workflow_name>`
-  - `add url <url> to <workflow_name>`
-  - `run <workflow_name>`
-  - `list workflows`
-  - `system info`
-  - `set volume to <number>`
-  - `mute volume`
-  - `enable tts`
-  - `disable tts`
-  - `create workflow <name>` should create a :Workflow: with a local name.
-  - `add app <app_name> to <workflow_name>` should append a `launch_app` :WorkflowAction:.
-  - `add url <url> to <workflow_name>` should append an `open_url` :WorkflowAction:.
-  - `run <workflow_name>` should run the named :Workflow:.
-  - `list workflows` should list stored :Workflow: records.
-  - `system info` should return local system information.
-  - `set volume to <number>` should update the active adapter volume.
-  - `mute volume` should mute the active adapter volume.
-  - `enable tts` and `disable tts` should toggle the local TTS setting.
-- :VIPEROSCore: should support creating and listing :Workflow: records locally.
+- :CommandParser: should interpret `create workflow <name>`.
+  - The command should create a :Workflow: using `<name>` as its local name.
+- :CommandParser: should interpret `add app <app_name> to <workflow_name>`.
+  - The command should append a `launch_app` :WorkflowAction: to the named :Workflow:.
+  - The action value should be `<app_name>`.
+- :CommandParser: should interpret `add url <url> to <workflow_name>`.
+  - The command should append an `open_url` :WorkflowAction: to the named :Workflow:.
+  - The action value should be `<url>`.
+- :CommandParser: should interpret `run <workflow_name>`.
+  - The command should run the named :Workflow:.
+- :CommandParser: should interpret `list workflows`.
+  - The command should list stored :Workflow: records.
+- :CommandParser: should interpret `system info`.
+  - The command should return local system information.
+- :CommandParser: should interpret `set volume to <number>`.
+  - The command should update the active :HardwareAdapter: volume to `<number>`.
+- :CommandParser: should interpret `mute volume`.
+  - The command should mute the active :HardwareAdapter: volume.
+- :CommandParser: should interpret `enable tts` and `disable tts`.
+  - The commands should toggle the local TTS setting to the requested state.
+- :VIPEROSCore: should support creating :Workflow: records locally.
   - `POST /workflow/create` should create a :Workflow: with a name and optional description.
-  - `POST /workflow/create` should store `stop_on_failure`, `continue_on_failure`, and `retry_count`.
+  - The created :Workflow: should store `stop_on_failure`, `continue_on_failure`, and `retry_count`.
+- :VIPEROSCore: should support listing :Workflow: records locally.
   - `GET /workflow/list` should return the stored :Workflow: records from SQLite.
-  - The response should include each workflow's name, description, failure policy, and retry count.
+  - Each returned record should include its name, description, failure policy, and retry count.
 - :VIPEROSCore: should support running a named :Workflow: locally.
   - `POST /workflow/run` should execute each :WorkflowAction: in order.
   - The request should identify the workflow by name.
@@ -77,12 +78,15 @@ description: VIPER OS Core is a headless, local-first automation runtime for CLI
   - `stop_on_failure` should stop later actions after a failure.
   - `continue_on_failure` should keep running later actions after a failure.
   - `retry_count` should retry a failed action before the failure policy applies.
-- :VIPEROSCore: should support local authentication.
-  - `POST /auth/login` should validate a username and passcode against local data.
-  - `POST /auth/login` should accept username and passcode fields.
-  - `POST /auth/mock-face` should return success by default.
-  - `POST /auth/mock-face` should not require biometric upload.
+- :VIPEROSCore: should expose `POST /auth/login` for local authentication.
+  - The request should accept username and passcode fields.
+  - The endpoint should validate the username and passcode against local :User: data.
+- :VIPEROSCore: should expose `POST /auth/mock-face` for mock face authentication.
+  - The endpoint should return success by default.
+  - The endpoint should not require biometric upload.
+- :VIPEROSCore: should keep biometric data local.
   - Biometric data should not leave the machine.
+  - `POST /auth/mock-face` should work without receiving biometric data.
 - :VIPEROSCore: should support optional TTS and voice input.
   - TTS should be controlled through local settings.
   - TTS speed should accept values from 50 to 400 WPM.
@@ -90,12 +94,19 @@ description: VIPER OS Core is a headless, local-first automation runtime for CLI
 - :VIPEROSCore: should store pending confirmations locally.
   - Each :PendingConfirmation: should store an action, a payload, and an expiration time.
   - Expired :PendingConfirmation: records should not be executed.
-- :VIPEROSCore: should detect the host platform and choose the matching adapter.
-  - Windows should use the Windows adapter.
-  - Linux should use the Linux adapter.
-  - macOS should use the macOS adapter.
-  - Unknown platforms should use the generic adapter.
-  - Raspberry Pi should be treated as Linux for adapter selection.
+- :VIPEROSCore: should detect the host platform for adapter selection.
+  - The detected platform should distinguish Windows, Linux, macOS, and unknown platforms.
+  - The detected platform should be used to choose the active :HardwareAdapter:.
+- :VIPEROSCore: should choose the Windows adapter on Windows.
+  - Windows hosts should use the Windows adapter as the active :HardwareAdapter:.
+- :VIPEROSCore: should choose the Linux adapter on Linux.
+  - Linux hosts should use the Linux adapter as the active :HardwareAdapter:.
+- :VIPEROSCore: should choose the macOS adapter on macOS.
+  - macOS hosts should use the macOS adapter as the active :HardwareAdapter:.
+- :VIPEROSCore: should choose the generic adapter for unknown platforms.
+  - Unknown platforms should use the generic adapter as the active :HardwareAdapter:.
+- :VIPEROSCore: should treat Raspberry Pi as Linux for adapter selection.
+  - Raspberry Pi hosts should use the Linux adapter as the active :HardwareAdapter:.
 - :VIPEROSCore: should store all local state in SQLite.
   - Users, workflows, workflow actions, settings, command logs, and confirmations should be local.
   - Expired pending confirmations should not be executed.

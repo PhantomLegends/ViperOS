@@ -52,19 +52,84 @@ $VenvPython = Join-Path $VenvScriptsFolder 'python.exe'
 
 Write-StepBanner 1 "Toolchain check"
 
-$PythonCommand = Get-Command python3 -ErrorAction SilentlyContinue
-if (-not $PythonCommand) {
-    $PythonCommand = Get-Command python -ErrorAction SilentlyContinue
+function Find-WorkingPython {
+    $Candidates = [System.Collections.Generic.List[string]]::new()
+
+    if (-not [string]::IsNullOrWhiteSpace($env:APPDATA)) {
+        $UvPythonRoot = Join-Path $env:APPDATA 'uv\python'
+        if (Test-Path -LiteralPath $UvPythonRoot -PathType Container) {
+            Get-ChildItem -Path (Join-Path $UvPythonRoot 'cpython-3.12*-windows-*\python.exe') `
+                -File -ErrorAction SilentlyContinue |
+                Sort-Object FullName -Descending |
+                ForEach-Object { $Candidates.Add($_.FullName) }
+        }
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($env:LOCALAPPDATA)) {
+        $Candidates.Add((Join-Path $env:LOCALAPPDATA 'Programs\Python\Python312\python.exe'))
+    }
+
+    $UvCommand = Get-Command uv -ErrorAction SilentlyContinue
+    if ($UvCommand) {
+        $env:UV_CACHE_DIR = Join-Path $InvocationRoot '.tmp\uv-cache'
+        $ManagedPython = (& $UvCommand.Source python find 3.12 2>$null | Select-Object -First 1)
+        if ($LASTEXITCODE -eq 0 -and (Test-Path -LiteralPath $ManagedPython -PathType Leaf)) {
+            $Candidates.Add($ManagedPython)
+        }
+    }
+
+    foreach ($Name in @('python', 'python3')) {
+        $Command = Get-Command $Name -ErrorAction SilentlyContinue
+        if (-not $Command -or $Command.Source -match 'WindowsApps') {
+            continue
+        }
+
+        $Candidates.Add($Command.Source)
+    }
+
+    $Launchers = [System.Collections.Generic.List[string]]::new()
+    $PyCommand = Get-Command py -ErrorAction SilentlyContinue
+    if ($PyCommand) {
+        $Launchers.Add($PyCommand.Source)
+    }
+    if (-not [string]::IsNullOrWhiteSpace($env:LOCALAPPDATA)) {
+        $Launchers.Add((Join-Path $env:LOCALAPPDATA 'Programs\Python\Launcher\py.exe'))
+    }
+    foreach ($Launcher in ($Launchers | Select-Object -Unique)) {
+        if (-not (Test-Path -LiteralPath $Launcher -PathType Leaf)) {
+            continue
+        }
+        $PreviousPreference = $ErrorActionPreference
+        $ErrorActionPreference = 'Continue'
+        $ResolvedPython = (& $Launcher -3.12 -c 'import sys; print(sys.executable)' 2>$null | Select-Object -First 1)
+        $LauncherExitCode = $LASTEXITCODE
+        $ErrorActionPreference = $PreviousPreference
+        if ($LauncherExitCode -eq 0 -and -not [string]::IsNullOrWhiteSpace($ResolvedPython)) {
+            $Candidates.Add($ResolvedPython)
+        }
+    }
+
+    foreach ($Candidate in ($Candidates | Select-Object -Unique)) {
+        if (-not (Test-Path -LiteralPath $Candidate -PathType Leaf)) {
+            continue
+        }
+        $PreviousPreference = $ErrorActionPreference
+        $ErrorActionPreference = 'Continue'
+        & $Candidate --version *> $null
+        $ExitCode = $LASTEXITCODE
+        $ErrorActionPreference = $PreviousPreference
+        if ($ExitCode -eq 0) {
+            return $Candidate
+        }
+    }
+
+    return $null
 }
 
-if (-not $PythonCommand) {
+$PythonExecutable = Find-WorkingPython
+if (-not $PythonExecutable) {
     Write-Host "Error: Python interpreter not found. Please install Python."
     exit $UnrecoverableErrorExitCode
-}
-
-$PythonExecutable = if ($PythonCommand.Source) { $PythonCommand.Source } else { $PythonCommand.Path }
-if ([string]::IsNullOrWhiteSpace($PythonExecutable)) {
-    $PythonExecutable = $PythonCommand.Name
 }
 
 Write-Host ("Python command: {0}" -f $PythonExecutable)
@@ -124,8 +189,8 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host ("Installing dependencies from {0}" -f (Join-Path (Get-Location).Path 'requirements.txt'))
-Write-CommandLine ("`"{0}`" -m pip install -r requirements.txt" -f $VenvPython)
-& $VenvPython -m pip install -r requirements.txt
+Write-CommandLine ("`"{0}`" -m pip install -r requirements.txt bcrypt==4.0.1" -f $VenvPython)
+& $VenvPython -m pip install -r requirements.txt 'bcrypt==4.0.1'
 if ($LASTEXITCODE -ne 0) {
     Write-FailureContext $LASTEXITCODE
     exit $LASTEXITCODE

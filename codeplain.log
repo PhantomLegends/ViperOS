@@ -1,0 +1,74 @@
+[00:00:02] INFO codeplain: -------------------------------------
+           Module: viper-os-core
+           Rendering functionality 23:
+           - :VIPEROSCore: should detect the host platform for adapter selection.
+             - The detected platform should distinguish Windows, Linux, macOS, and unknown platforms.
+             - The detected platform should be used to choose the active :HardwareAdapter:.
+           -------------------------------------
+[00:00:35] INFO codeplain: Running unit tests script C:\Users\viper\OneDrive\Desktop\Viper OS\viper-os-core\test_scripts\run_unittests_python.ps1. (attempt: 1)
+[00:01:50] INFO codeplain: [#79FC96]All Unit Tests scripts have passed successfully.[/#79FC96]
+[00:01:50] INFO codeplain: Refactoring the generated code...
+[00:02:20] INFO codeplain: Running unit tests script C:\Users\viper\OneDrive\Desktop\Viper OS\viper-os-core\test_scripts\run_unittests_python.ps1. (attempt: 1)
+[00:03:33] INFO codeplain: [#79FC96]All Unit Tests scripts have passed successfully.[/#79FC96]
+[00:03:36] INFO codeplain: -------------------------------------
+           Module: viper-os-core
+           Rendering functionality 24:
+           - :VIPEROSCore: should choose the Windows adapter on Windows.
+             - Windows hosts should use the Windows adapter as the active :HardwareAdapter:.
+           -------------------------------------
+[00:03:50] INFO codeplain: Running unit tests script C:\Users\viper\OneDrive\Desktop\Viper OS\viper-os-core\test_scripts\run_unittests_python.ps1. (attempt: 1)
+[00:05:30] INFO codeplain: Running unit tests script C:\Users\viper\OneDrive\Desktop\Viper OS\viper-os-core\test_scripts\run_unittests_python.ps1. (attempt: 2)
+[00:07:00] INFO codeplain: [#79FC96]All Unit Tests scripts have passed successfully.[/#79FC96]
+[00:07:00] INFO codeplain: Refactoring the generated code...
+[00:07:02] INFO codeplain: -------------------------------------
+           Module: viper-os-core
+           Rendering functionality 25:
+           - :VIPEROSCore: should choose the Linux adapter on Linux.
+             - Linux hosts should use the Linux adapter as the active :HardwareAdapter:.
+           -------------------------------------
+[00:07:25] INFO codeplain: Running unit tests script C:\Users\viper\OneDrive\Desktop\Viper OS\viper-os-core\test_scripts\run_unittests_python.ps1. (attempt: 1)
+[00:08:55] INFO codeplain: [#79FC96]All Unit Tests scripts have passed successfully.[/#79FC96]
+[00:08:55] INFO codeplain: Refactoring the generated code...
+[00:08:57] INFO codeplain: -------------------------------------
+           Module: viper-os-core
+           Rendering functionality 26:
+           - :VIPEROSCore: should choose the macOS adapter on macOS.
+             - macOS hosts should use the macOS adapter as the active :HardwareAdapter:.
+           -------------------------------------
+[00:09:26] INFO codeplain: Running unit tests script C:\Users\viper\OneDrive\Desktop\Viper OS\viper-os-core\test_scripts\run_unittests_python.ps1. (attempt: 1)
+[00:10:55] INFO codeplain: [#79FC96]All Unit Tests scripts have passed successfully.[/#79FC96]
+[00:10:55] INFO codeplain: Refactoring the generated code...
+[00:11:18] INFO codeplain: Running unit tests script C:\Users\viper\OneDrive\Desktop\Viper OS\viper-os-core\test_scripts\run_unittests_python.ps1. (attempt: 1)
+[00:12:50] INFO codeplain: [#79FC96]All Unit Tests scripts have passed successfully.[/#79FC96]
+[00:12:52] INFO codeplain: -------------------------------------
+           Module: viper-os-core
+           Rendering functionality 27:
+           - :VIPEROSCore: should choose the generic adapter for unknown platforms.
+             - Unknown platforms should use the generic adapter as the active :HardwareAdapter:.
+           -------------------------------------
+[00:13:15] INFO codeplain: Running unit tests script C:\Users\viper\OneDrive\Desktop\Viper OS\viper-os-core\test_scripts\run_unittests_python.ps1. (attempt: 1)
+[00:14:46] INFO codeplain: [#79FC96]All Unit Tests scripts have passed successfully.[/#79FC96]
+[00:14:46] INFO codeplain: Refactoring the generated code...
+[00:14:48] INFO codeplain: -------------------------------------
+           Module: viper-os-core
+           Rendering functionality 28:
+           - :VIPEROSCore: should treat Raspberry Pi as Linux for adapter selection.
+             - Raspberry Pi hosts should use the Linux adapter as the active :HardwareAdapter:.
+           -------------------------------------
+[00:15:07] INFO codeplain: Running unit tests script C:\Users\viper\OneDrive\Desktop\Viper OS\viper-os-core\test_scripts\run_unittests_python.ps1. (attempt: 1)
+[00:16:37] INFO codeplain: [#79FC96]All Unit Tests scripts have passed successfully.[/#79FC96]
+[00:16:38] INFO codeplain: Refactoring the generated code...
+[00:16:40] INFO codeplain: -------------------------------------
+           Module: viper-os-core
+           Rendering functionality 29:
+           - :VIPEROSCore: should store all local state in SQLite.
+             - Users, workflows, workflow actions, settings, command logs, and confirmations should be local.
+             - Expired pending confirmations should not be executed.
+           -------------------------------------
+[00:17:11] INFO codeplain: Running unit tests script C:\Users\viper\OneDrive\Desktop\Viper OS\viper-os-core\test_scripts\run_unittests_python.ps1. (attempt: 1)
+[00:19:23] INFO codeplain: Running unit tests script C:\Users\viper\OneDrive\Desktop\Viper OS\viper-os-core\test_scripts\run_unittests_python.ps1. (attempt: 2)
+[00:21:30] INFO codeplain: Running unit tests script C:\Users\viper\OneDrive\Desktop\Viper OS\viper-os-core\test_scripts\run_unittests_python.ps1. (attempt: 3)
+[00:23:46] INFO codeplain: Running unit tests script C:\Users\viper\OneDrive\Desktop\Viper OS\viper-os-core\test_scripts\run_unittests_python.ps1. (attempt: 4)
+[00:25:18] INFO codeplain: [#79FC96]All Unit Tests scripts have passed successfully.[/#79FC96]
+[00:25:18] INFO codeplain: Refactoring the generated code...
+[00:25:20] INFO codeplain: [#79FC96]Render of module viper-os-core completed successfully.[/#79FC96]

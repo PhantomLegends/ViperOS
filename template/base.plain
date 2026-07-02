@@ -20,8 +20,14 @@ description: Shared base requirements for VIPER OS Core.
 - :Implementation: should keep TTS optional and controlled through settings.
 - :Implementation: should keep voice input optional and local.
 - :Implementation: should hash passcodes before storage.
+- :Implementation: should pin `bcrypt` to version `4.0.1` for compatibility with `passlib` version `1.7.4`.
 - :Implementation: should treat Raspberry Pi as Linux for adapter selection.
 - :Implementation: should manage Python dependencies with `pip` and `requirements.txt`.
 - :UnitTests: should use `pytest`.
 - :UnitTests: should run via `python -m pytest`.
-- :UnitTests: runner details are documented in [run_unittests_python.ps1](resources/run_unittests_python.ps1).
+- :UnitTests: should isolate local state and cover each functional component.
+  - Use temporary SQLite databases and test fixtures so tests never share or modify runtime state.
+  - Mock hardware, speech, voice, filesystem, browser, process, and platform boundaries.
+  - Cover valid inputs, invalid inputs, boundary values, persistence, retries, and failure policies.
+  - Cover command parsing, API routes, authentication, workflows, confirmations, settings, and adapter selection.
+  - Assert externally visible results and persisted state instead of implementation details.
